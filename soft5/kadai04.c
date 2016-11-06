@@ -36,11 +36,7 @@ void initialize(char matrix[HEIGHT][WIDTH]){
   int i,j;
   for(i = 0;i < HEIGHT;i++){
     for(j = 0;j < WIDTH;j++){
-      if(j%10==0){
-        matrix[i][j] = '*';
-      }else{
       matrix[i][j] = '.';
-      }
     }
   }
 }
@@ -49,23 +45,24 @@ void initialize(char matrix[HEIGHT][WIDTH]){
 void runlength_save(FILE *fp,char matrix[HEIGHT][WIDTH]){  //その１
   int i,j;
   char w = matrix[0][0]; //直前の文字
-  char int_char[1] = " ";
-  int cnt = 0;
+  char int_char[1] = " ";//繰り返し回数　最大9回まで
+  int rep = 0;//繰り返し回数のカウント
 
   fp = fopen("data.txt","w");
   for(i = 0; i < HEIGHT; i++){
     for(j = 0; j < WIDTH; j++){
       if(w == matrix[i][j]){
-       	cnt++;       //直前の文字と同じだったら
+       	rep++;       //直前の文字と同じだったら
       }else{
-	sprintf(int_char,"%d",cnt);
+	sprintf(int_char,"%d",rep);
 	fprintf(fp,"%c%c",w,int_char[0]);
-
 	w = matrix[i][j];
-	cnt = 1;
+	rep = 1;
       }
     }
   }
+  sprintf(int_char,"%d",rep);
+  fprintf(fp,"%c%c",w,int_char[0]);
  fclose(fp);
 }
 
